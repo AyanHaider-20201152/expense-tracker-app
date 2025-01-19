@@ -10,6 +10,13 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        'head-back-1': '#EAB308',
+        'head-back-2': '#D97706',
+        'head-text': '#06402B',
+
+        'body-back': '#EAB308',
+        'body-text': '#06402B',
       },
     },
   },
