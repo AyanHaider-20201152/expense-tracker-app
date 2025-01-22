@@ -27,5 +27,5 @@ export async function POST(request){
 
     await expenseModel.create(expenseData);
 
-    return NextResponse.json({sucess:true})
+    return NextResponse.json({success:true, msg:"Expense Added"})
 }
