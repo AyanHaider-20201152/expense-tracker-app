@@ -1,6 +1,5 @@
 import { ConnectDB } from "@/lib/config/db"
-import fundModel from "@/lib/models/FundModel";
-import { Cursor } from "mongoose";
+import sumModel from "@/lib/models/SumModel";
 const { NextResponse } = require("next/server")
 
 const LoadDB = async () =>{
@@ -9,38 +8,18 @@ const LoadDB = async () =>{
 
 LoadDB();
 
-var fundExists;
-
-export async function GET(request){
-    fundExists = await fundModel.exists({title:"Remaining Funds"})
-
-    if (fundExists != null) {
-        const fund = await fundModel.find({title:"Remaining Funds"})
-        return NextResponse.json({fund, success:true})
-    }
-
-    else {
-        const fund = await fundModel.find({title:"Remaining Funds"})
-        return NextResponse.json({fund, success:false})
-    }
-}
 
 
 export async function POST(request){
     const formData = await request.formData()
     const formValue = Number(formData.get('value'))
-    var currentFund 
 
-    if (fundExists){
-        currentFund = Number(await fundModel.find({title:"Remaining Funds"}).value);
-    }
-    else {
-        currentFund = 0;
-        fundExists= true;
-    }
+    var displayFund = await sumModel.find({title:"Remaining Funds"})
+    displayFund = Number(displayFund[0].value)
 
-    await fundModel.updateOne({title:"Remaining Funds"}, {value:formValue + currentFund}, {upsert: true});
+    await sumModel.updateOne({title:"Remaining Funds"}, {value:formValue + displayFund}, {upsert: true});
+
     console.log(formValue)
-    console.log(currentFund)
+    console.log(displayFund)
     return NextResponse.json({success:true, msg:"Funds Added"})
 }

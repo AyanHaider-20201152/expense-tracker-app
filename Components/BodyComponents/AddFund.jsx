@@ -1,16 +1,20 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddFund= () => {
+
+
+export default function AddFund({context}) {
+    
+    const bodyData = useContext(context);
     const [popFund, setPopFund] = useState({
-        value:""
-    })
+            value:""
+        })
 
     const onChanceHandler = (event) =>{
-        const name =event.target.name;
+        const name = event.target.name;
         const value = event.target.value;
         setPopFund(popFund=>({...popFund,[name]:value}));
     }
@@ -19,9 +23,21 @@ const AddFund= () => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('value', popFund.value);
+
         const response = await axios.post('/api/fund',formData);
-        if (response.data.success) {
-            toast.success(response.data.msg);
+        const resResult = response.data.success;
+        const resMessage = response.data.msg;
+        
+        if (resResult) {
+            toast.success(resMessage);
+
+            const response = await axios.get('/api/display');
+            bodyData.setFund(response.data.displayFund[0].value);
+
+            setPopFund({
+                value:""
+            })
+
         } else {
             toast.error("Error");
         }
@@ -37,5 +53,3 @@ const AddFund= () => {
             </form>
     );
 }
-
-export default AddFund

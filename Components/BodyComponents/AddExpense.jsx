@@ -1,10 +1,14 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddExpense = () => {
+
+
+export default function AddExpense({context}) {
+
+    const bodyData = useContext(context);
     const [popExpense, setPopExpense] = useState({
         category:"",
         itemName:"",
@@ -12,7 +16,7 @@ const AddExpense = () => {
     })
 
     const onChangeHandler = (event) =>{
-        const name =event.target.name;
+        const name = event.target.name;
         const value = event.target.value;
         setPopExpense(popExpense=>({...popExpense,[name]:value}));
     }
@@ -23,9 +27,22 @@ const AddExpense = () => {
         formData.append('category', popExpense.category);
         formData.append('itemName', popExpense.itemName);
         formData.append('cost', popExpense.cost);
+
         const response = await axios.post('/api/expense',formData);
-        if (response.data.success) {
-            toast.success(response.data.msg);
+        const resResult = response.data.success;
+        const resMessage = response.data.msg;
+
+         if (resResult) {
+            toast.success(resMessage);
+            
+            const response = await axios.get('/api/display');
+            bodyData.setFund(response.data.displayFund[0].value);
+
+            setPopExpense({
+                category:"",
+                itemName:"",
+                cost:""
+            })
         } else {
             toast.error("Error");
         }
@@ -57,4 +74,3 @@ const AddExpense = () => {
     );
 }
 
-export default AddExpense
