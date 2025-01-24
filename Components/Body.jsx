@@ -39,14 +39,16 @@ const Body = () => {
                 <h1 className='text-3xl sm:text-5xl font-medium'>Remaining Funds</h1>
             </div>
 
-            <div className='flex justify-center items-center gap-2 text-3xl sm:text-5xl font-medium border border-solid border-head-text'>
+            <div className='flex justify-center items-center gap-2 text-3xl sm:text-5xl font-medium'>
                 <CountUp duration={2.5} className='counter' end={fundValue}/>
                 <h1> Taka</h1>
             </div>
             
             <counterContext.Provider value ={{fundValue, setFund}}>
-                <AddFund context={counterContext} />  
-                <AddExpense context={counterContext} />    
+                <div className='flex justify-evenly' >
+                    <AddFund context={counterContext} />  
+                    <AddExpense context={counterContext} />    
+                </div>
             </counterContext.Provider>
 
 

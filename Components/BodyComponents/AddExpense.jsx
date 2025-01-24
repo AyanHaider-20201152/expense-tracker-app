@@ -53,11 +53,11 @@ export default function AddExpense({context}) {
                     <p className='text-xl mt-4'>Category</p>
                     <select name='category' onChange={onChangeHandler} value={popExpense.category}  className='w-full sm:w-[500px] mt-4 px-4 py-3 border' type="text" placeholder="Enter" required>
                         <option value="">--Please choose a category--</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Gardening">Gardening</option>
-                        <option value="Eating Out">Eating Out</option>
-                        <option value="Groceries">Groceries</option>
-                        <option value="Commute">Commute</option>
+                        <option >Utilities</option>
+                        <option >Gardening</option>
+                        <option >Eating Out</option>
+                        <option >Groceries</option>
+                        <option >Commute</option>
                     </select>
                 </div>
                 <div className='flex justify gap-5'>

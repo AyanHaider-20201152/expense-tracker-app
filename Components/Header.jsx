@@ -1,4 +1,6 @@
 import React from 'react'
+import Link from 'next/link'
+
 
 const Header = () => {
     return (
@@ -7,13 +9,10 @@ const Header = () => {
                 <h1 className='text-3xl sm:text-5xl font-medium'>Xpense-Tracker</h1>
 
                 <div className='flex justify-end items-center gap-3'>
-                    <button className='bg-head-back-1 gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-solid border-head-text shadow-[-7px_7px_0px_#06402B]'>Expenses</button>
-                    <button className='bg-head-back-1 gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-solid border-head-text shadow-[-7px_7px_0px_#06402B]'>Pnses</button>
+                    <Link href='/'className='bg-head-back-1 gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-solid border-head-text shadow-[-7px_7px_0px_#06402B]'>Home</Link>
+                    <Link href='/pages/expense' className='bg-head-back-1 gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-solid border-head-text shadow-[-7px_7px_0px_#06402B]'>Expenses</Link>
                 </div>
             </div>
-            {/* <div className='text-center text-head-text my-8'>
-                <h1 className='text-3xl sm:text-5xl font-medium'>Funds Remaining</h1>
-            </div> */}
         </div>
     )
 }
