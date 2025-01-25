@@ -18,6 +18,8 @@ export async function GET(request){
             title:"Remaining Funds", 
             value:0
         });
+        
+        displayFund = await sumModel.find({title:"Remaining Funds"})
     }
     
     console.log(displayFund[0].value)

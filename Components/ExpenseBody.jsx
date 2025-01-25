@@ -1,32 +1,38 @@
 'use client'
 import React, { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import {ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Dropdown from 'react-bootstrap/Dropdown';
+import DatePicker from 'react-date-picker';
 
+import ExpenseItem from './ExpensesComponents/ExpenseItem';
 
 const ExpenseBody = () => {
 
     const counterContext = createContext();
-    const [expenseValue, setExpense] = useState([]);
+    const [selectedDate1, setSelectedDate1] = useState(new Date("01-01-2020"));
+    const [selectedDate2, setSelectedDate2] = useState(new Date());
+
+    const [expensesData, setExpense] = useState([]);
+    const [expensesDates, setExpDates] = useState([]);
+
 
     const fetchExpense = async () =>{
         const response = await axios.get('/api/expense');
 
-        if (response.data.displayExpense[0] === undefined) {
+        if (response.data.displayExpenses[0] == undefined) {
             setExpense();
         } else {
-            setExpense(response.data.displayExpense);
+            setExpense(response.data.displayExpenses);
         }
         
-        console.log(response.data.displayExpense)
+        setExpDates(response.data.dates);
+
+        console.log(response.data.displayExpenses);
+        console.log(response.data.dates);
     }
 
     useEffect(()=>{
         fetchExpense();
     },[])
-
 
 
     return (
@@ -35,30 +41,39 @@ const ExpenseBody = () => {
                 <h1 className='text-3xl sm:text-5xl font-medium'>All Expenses</h1>
             </div>
 
-            <div className='flex justify-evenly items-center'>
-                <div className='d-flex flex-column '>
+            <div className="d-flex flex-direction:column justify-evenly">
 
-                    <div>
-                    <Dropdown className='text-3xl sm:text-5xl font-medium border border-solid border-head-text' autoClose={"false"}>
-                            <Dropdown.Toggle>Open Menu</Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item href="#">
-                                    Home Page
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#">
-                                    Settings
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#">
-                                    Logout
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>       
-                    </div>
+                <div className="flex justify-evenly">
+                    <DatePicker width="640" height="480"
+                        label="startRange"
+                        value={selectedDate1}
+                        onChange={(newValue) => setSelectedDate1(new Date(newValue))}
+                    />
+                    <DatePicker width="640" height="480"
+                        label="endRange"
+                        value={selectedDate2}
+                        onChange={(newValue) => setSelectedDate2(new Date(newValue))}
+                    />
+                </div>
 
+
+                <div className="flex justify-evenly">
+                    <iframe width="350" height="350" 
+                    src={'https://charts.mongodb.com/charts-project-0-kwirzsu/embed/charts?id=0e3fa54b-f19b-464a-af61-cef75829a01e&maxDataAge=60&theme=light&filter={"date":{$gte:"'+''+'",$lte:"'+''+'"}}&autoRefresh=true'}>
+                    </iframe>
                 </div>
             </div>
 
-
+            {expensesDates.map((uniqueDate, index)=>{
+                
+                return (
+                    <div key={index}>
+                    <div>Expenses on {uniqueDate.slice(0,10)}</div>
+                    <ExpenseItem expensesData={expensesData} uniqueDate={uniqueDate}/>
+                    </div>
+                )
+            })}
+            
         </div>
     )   
 }

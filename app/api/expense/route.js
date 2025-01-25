@@ -12,14 +12,16 @@ LoadDB();
 var displayExpenses;
 
 export async function GET(request){
-    displayExpenses = await expenseModel.find()
+    displayExpenses = await expenseModel.find({date:{$gte:new Date("2025-01-18"),$lte:new Date("2025-01-26")}})
+    
 
     if (displayExpenses[0] == undefined) {
         await expenseModel.create({
         });
     }
     
-    return NextResponse.json({displayExpenses, success:true})
+    var dates = await expenseModel.distinct("date")
+    return NextResponse.json({dates, displayExpenses, success:true})
 
 }
 
