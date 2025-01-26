@@ -14,6 +14,7 @@
     "bootstrap": "^5.3.3",
     "mongoose": "^8.9.5",
     "next": "15.1.5",
+    "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.8",
     "react-countup": "^6.5.3",

@@ -1,6 +1,7 @@
 import { ConnectDB } from "@/lib/config/db"
 import expenseModel from "@/lib/models/ExpenseModel";
 import sumModel from "@/lib/models/SumModel";
+import queryString from 'query-string';
 const { NextResponse } = require("next/server")
 
 const LoadDB = async () =>{
@@ -12,7 +13,8 @@ LoadDB();
 var displayExpenses;
 
 export async function GET(request){
-    displayExpenses = await expenseModel.find({date:{$gte:new Date("2025-01-18"),$lte:new Date("2025-01-26")}})
+    const sDates = queryString.parse(request.url)
+    displayExpenses = await expenseModel.find({date:{$gte:new Date(sDates.date1),$lte:new Date(sDates.date2)}})
     
 
     if (displayExpenses[0] == undefined) {

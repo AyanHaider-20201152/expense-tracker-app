@@ -7,16 +7,18 @@ import ExpenseItem from './ExpensesComponents/ExpenseItem';
 
 const ExpenseBody = () => {
 
-    const counterContext = createContext();
-    const [selectedDate1, setSelectedDate1] = useState(new Date("01-01-2020"));
-    const [selectedDate2, setSelectedDate2] = useState(new Date());
+    const [selectedDate1, setSelectedDate1] = useState("2020-01-01");
+    const [selectedDate2, setSelectedDate2] = useState(new Date().toISOString());
 
     const [expensesData, setExpense] = useState([]);
     const [expensesDates, setExpDates] = useState([]);
 
 
     const fetchExpense = async () =>{
-        const response = await axios.get('/api/expense');
+        const response = await axios.get('/api/expense/??', {params: {
+                                                                    date1: selectedDate1,
+                                                                    date2: selectedDate2
+                                                                    }});
 
         if (response.data.displayExpenses[0] == undefined) {
             setExpense();
@@ -26,8 +28,7 @@ const ExpenseBody = () => {
         
         setExpDates(response.data.dates);
 
-        console.log(response.data.displayExpenses);
-        console.log(response.data.dates);
+
     }
 
     useEffect(()=>{
@@ -47,19 +48,19 @@ const ExpenseBody = () => {
                     <DatePicker width="640" height="480"
                         label="startRange"
                         value={selectedDate1}
-                        onChange={(newValue) => setSelectedDate1(new Date(newValue))}
+                        onChange={(newValue) => setSelectedDate1(newValue.toISOString())}
                     />
                     <DatePicker width="640" height="480"
                         label="endRange"
                         value={selectedDate2}
-                        onChange={(newValue) => setSelectedDate2(new Date(newValue))}
+                        onChange={(newValue) => setSelectedDate2(newValue.toISOString())}
                     />
                 </div>
 
 
                 <div className="flex justify-evenly">
                     <iframe width="350" height="350" 
-                    src={'https://charts.mongodb.com/charts-project-0-kwirzsu/embed/charts?id=0e3fa54b-f19b-464a-af61-cef75829a01e&maxDataAge=60&theme=light&filter={"date":{$gte:"'+''+'",$lte:"'+''+'"}}&autoRefresh=true'}>
+                    src={'https://charts.mongodb.com/charts-project-0-kwirzsu/embed/charts?id=0e3fa54b-f19b-464a-af61-cef75829a01e&maxDataAge=60&theme=light&filter={"date":{$gte:new%20Date("'+selectedDate1+'"), $lte:new%20Date("'+selectedDate2+'")}}&autoRefresh=true'}>
                     </iframe>
                 </div>
             </div>
